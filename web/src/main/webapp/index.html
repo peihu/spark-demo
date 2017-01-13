@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <title>测试页面</title>
     <script src="js/echarts.min.js"></script>
+    <style>
+        .chart {
+            width: 600px;
+            height: 400px;
+            border: 2px;
+        }
+
+    </style>
 </head>
 <body>
 <h1 style="align-content: center"> 测试Echarts </h1>
 
-<div id="main" style="width: 600px;height: 400px;"></div>
+<div id="main" class="chart"></div>
 
 
 <script type="text/javascript">
@@ -28,37 +36,27 @@
 
         yAxis: {},
 
-        series: [{
-            name: '销量',
-            type: 'bar',
-            data: [123, 209, 1003]
-        },
+        series: [
+            {
+                name: '销量',
+                type: 'bar',
+                data: [123, 209, 1003]
+            },
             {
                 name: '产量',
                 type: 'bar',
                 data: [199, 309, 803]
             }
-
         ]
     };
     myChart.setOption(option);
 </script>
 
-<div id="pie-chart" style="width:600px; height: 400px;"></div>
+<div id="pie-chart" class="chart"></div>
 <script type="text/javascript">
     var pieChart = echarts.init(document.getElementById('pie-chart'));
     pieChart.setOption({
-        itemStyle: {
-
-
-            normal: {
-                shadowBlur: 200,
-                shadowOffsetX: 5,
-                shadowOffsetY: 5,
-                shadowColor: 'rgba(0,0,0,0.5)'
-            }
-
-        },
+        title: {text: "柱状图入门示例"},
         series: [{
             name: "测试图-饼状图",
             type: "pie",
