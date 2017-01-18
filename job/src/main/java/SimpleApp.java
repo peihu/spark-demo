@@ -16,6 +16,10 @@ public class SimpleApp {
         JavaRDD<String> logData = sc.textFile(logFile).cache();
 
 
+        //
+
+
+
 
 
 
@@ -46,6 +50,9 @@ public class SimpleApp {
             }
         });
         List<Object> collect = mapResult.collect();
+
+
+        union.saveAsTextFile("~/");
         System.out.println(StringUtils.join(collect, ","));
     }
 }
