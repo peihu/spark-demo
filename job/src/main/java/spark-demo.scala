@@ -1,8 +1,4 @@
-## spark快速大数据分析-读书笔记
 
-### 第三章：RDD编程
-
-```
 val lines = sc.textFile("../../full-server.log")
 
 val defualtRDD = lines.filter(line => line.contains("org.pbsframework.ebs.impl.DefaultDataBus"))
@@ -23,8 +19,8 @@ class SearchFunctions(){
 
 
 }
-```
 
-### 键值对操作
 
-- 4.1
+### 绗洓绔狅細閿�煎鎿嶄綔
+
+## 
