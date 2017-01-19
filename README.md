@@ -21,7 +21,6 @@ lines.saveAsTextFile()
 ```
 
 ### 第四章：键值对操作
-
 - 键值对RDD通常用来进行聚合计算
 -  
 
@@ -42,3 +41,18 @@ lines.saveAsTextFile()
 
 - Spark SQL中的结构化数据源
 - 数据库与键值存储
+#### 数据库
+    - java数据库连接
+    
+    
+---
+- 提交到任务中
+    ```
+    ./spark-submit --class "SimpleApp" --master local[4] ~/phwang/job/spark-job-1.0-SNAPSHOT.jar
+    ```
+    
+    
+### 第七章：在集群上运行Spark
+    
+#### 驱动器在spark中的2个职责
+    - 把用户程序转换成任务
