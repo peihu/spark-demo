@@ -21,3 +21,6 @@
 //}
 //
 //##
+
+
+//val jdbcDF = sqlContext.read.format("jdbc").options(Map("url" -> "jdbc:mysql://localhost:3306/test", "driver" -> "com.mysql.jdbc.Driver", "dbtable" -> "user", "user" -> "root", "password" -> "root")).load()

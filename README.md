@@ -49,10 +49,11 @@ lines.saveAsTextFile()
 - 提交到任务中
     ```
     ./spark-submit --class "SimpleApp" --master local[4] ~/phwang/job/spark-job-1.0-SNAPSHOT.jar
+    其中 local[4]的意思是：使用四个核心
     ```
     
     
 ### 第七章：在集群上运行Spark
     
 #### 驱动器在spark中的2个职责
-    - 把用户程序转换成任务
+- 把用户程序转换成任务
