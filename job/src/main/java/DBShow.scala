@@ -1,7 +1,7 @@
-import java.sql.{ResultSet, DriverManager}
+import java.sql.{DriverManager, ResultSet}
 
 import org.apache.spark.rdd.JdbcRDD
-import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * scala版本的数据读取
@@ -13,6 +13,8 @@ object DBShow {
     val sparkConf = new SparkConf().setAppName("DBShow").setMaster("local")
     val sparkContext = new SparkContext(sparkConf)
 
+
+
     val data = new JdbcRDD(
       sparkContext,
       mysqlConnection,
@@ -21,9 +23,11 @@ object DBShow {
       upperBound = 11252,
       numPartitions = 1,
       mapRow = extractValues)
+
+
+
     println(data.collect().toList)
   }
-
 
 
   def mysqlConnection() = {
@@ -33,17 +37,17 @@ object DBShow {
 
   def extractValues(result: ResultSet) = {
     result.getInt(1)
-/*
+    /*
 
-    (
-      result.getInt(1)
-      , result.getString(2)
-      , result.getString(3)
-      , result.getString(4)
-      , result.getString(5)
+        (
+          result.getInt(1)
+          , result.getString(2)
+          , result.getString(3)
+          , result.getString(4)
+          , result.getString(5)
 
-      )
-*/
+          )
+    */
 
   }
 
