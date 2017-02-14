@@ -3,6 +3,7 @@ package com.spark.demo
 /**
  * Scala语法学习：
  * http://alanwu.iteye.com/blog/478953
+ * http://www.cnblogs.com/wei-li/p/ScalaFirstSight.html
  * 这个demo中包含了：
  * 1.   函数定义
  * 2.   变量定义
@@ -10,7 +11,10 @@ package com.spark.demo
  * 4.   函数当成变量传递
  * 5.   循环定义：（while、for、foreach）
  * 6.   匿名函数
- * 79.  w
+ * 7.
+ * 8.
+ * 9.
+ * 10.
  *
  * Created by phwang on 2017/2/10.
  */
@@ -35,9 +39,7 @@ object ScalaDemo {
   =============
   =   数组：   =
   =============
-    */
-
-
+  */
   def array(): Unit = {
 
   }
@@ -74,7 +76,7 @@ object ScalaDemo {
       println(a)
     }
 
-    // foreach 循环
+    // foreach 循环   => 是个方法体
     println("============================")
     println("foreach loop:")
     ar.foreach(a => println(a))

@@ -1,6 +1,8 @@
 import java.sql.{DriverManager, ResultSet}
+import java.util.Properties
 
 import org.apache.spark.rdd.JdbcRDD
+import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -10,45 +12,66 @@ import org.apache.spark.{SparkConf, SparkContext}
 object DBShow {
 
   def main(args: Array[String]) {
-    val sparkConf = new SparkConf().setAppName("DBShow").setMaster("local")
-    val sparkContext = new SparkContext(sparkConf)
+
+    val sparkContext = new SparkContext(new SparkConf().setAppName("DBShow").setMaster("local"))
+
+    val sqlContext: SQLContext = new SQLContext(sparkContext)
+
+    val prop = new Properties()
+    Class.forName("oracle.jdbc.driver.OracleDriver").newInstance
+    prop.put("user", "rcontrol")
+    prop.put("password", "rcontrol")
+    val df: DataFrame = sqlContext.read.jdbc(
+      "jdbc:oracle:thin:@10.48.193.234:1521:hpdev26", "gov_para_system", prop)
+
+    // 所有的结果集，转成list
+    println(df.collect().toList)
+
+    //
+    println("=============>>  ")
+    println("df.printSchema()  ")
+    df.printSchema()
 
 
+    println("=============>>  ")
+    println("df.select(\"GOVSYSTEMNAME\")")
+    println(df.select("GOVSYSTEMNAME"))
 
+
+    println("=============>>  ")
+    println(df.count())
+
+    println(df.rdd.partitions.size)
+    //executeQuery(sparkContext)
+    df.show()
+
+  }
+
+  def executeInsert(sparkContext: SparkContext): Unit = {
+
+  }
+
+  def executeQuery(sparkContext: SparkContext): Unit = {
+    // lowerBounder 是第一个占位符
+    // upperBounder 是第二个占位符
+    // numPartitions 是结果分为几部分
     val data = new JdbcRDD(
-      sparkContext,
-      mysqlConnection,
-      "select count(*) from gov_command where commandId >= ? and commandId <= ?",
-      lowerBound = 0,
-      upperBound = 11252,
-      numPartitions = 1,
-      mapRow = extractValues)
-
-
-
-    println(data.collect().toList)
+      sparkContext, conn,
+      "select * from gov_para_system where rownum >= ? and rownum <=?",
+      1, 6, 2,
+      extractValues)
+    println(data.collect().toSet)
   }
 
 
-  def mysqlConnection() = {
-    Class.forName("com.mysql.jdbc.Driver").newInstance()
-    DriverManager.getConnection("jdbc:mysql://localhost:3306/test?user=root&password=root")
+  def conn() = {
+    Class.forName("oracle.jdbc.driver.OracleDriver").newInstance
+    val url = "jdbc:oracle:thin:@10.48.193.234:1521:hpdev26"
+    DriverManager.getConnection(url, "rcontrol", "rcontrol")
   }
 
   def extractValues(result: ResultSet) = {
-    result.getInt(1)
-    /*
-
-        (
-          result.getInt(1)
-          , result.getString(2)
-          , result.getString(3)
-          , result.getString(4)
-          , result.getString(5)
-
-          )
-    */
-
+    (result.getString(1), result.getString(2))
   }
 
 }
