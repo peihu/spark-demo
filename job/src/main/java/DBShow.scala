@@ -2,7 +2,8 @@ import java.sql.{DriverManager, ResultSet}
 import java.util.Properties
 
 import org.apache.spark.rdd.JdbcRDD
-import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.{Row, SaveMode, DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
@@ -15,8 +16,65 @@ object DBShow {
 
     val sparkContext = new SparkContext(new SparkConf().setAppName("DBShow").setMaster("local"))
 
+
+    //mysqlSave(sparkContext)
+
+    oracleSave(sparkContext)
+  }
+
+
+  def mysqlSave(sparkContext: SparkContext): Unit = {
     val sqlContext: SQLContext = new SQLContext(sparkContext)
 
+    val prop = new Properties()
+    Class.forName("com.mysql.jdbc.Driver").newInstance
+    prop.put("user", "root")
+    prop.put("password", "root")
+
+    case class User(GOVSYSTEMNAME: String, CONNECTIONPARAMETER: String)
+
+    val users = sparkContext.parallelize(1 to 10).map(f => User("k-" + f, "val-" + f)).map(f => Row(f.GOVSYSTEMNAME, f.CONNECTIONPARAMETER))
+
+    println("===================")
+    println("=users.foreach(println)=")
+    users.foreach(println)
+    println("===================")
+
+    val schema = StructType(Array(StructField("k_a", StringType, true), StructField("v_a", StringType, true)))
+
+
+    sqlContext.createDataFrame(users, schema).write.mode(SaveMode.Append).jdbc(
+      "jdbc:mysql://localhost:3306/test", "st", prop)
+
+
+  }
+
+
+  def oracleSave(sparkContext: SparkContext): Unit = {
+    val sqlContext: SQLContext = new SQLContext(sparkContext)
+    val prop = new Properties()
+    Class.forName("oracle.jdbc.driver.OracleDriver").newInstance
+    val url = "jdbc:oracle:thin:@10.48.193.234:1521/hpdev26"
+    prop.put("user", "rcontrol")
+    prop.put("password", "rcontrol")
+
+    case class User(GOVSYSTEMNAME: String, CONNECTIONPARAMETER: String)
+
+    val users = sparkContext.parallelize(1 to 10).map(f => User("key-" + f, "val-" + f)).map(f => Row(f.GOVSYSTEMNAME, f.CONNECTIONPARAMETER))
+
+    val schema = StructType(Array(StructField("GOVSYSTEMNAME", StringType, true), StructField("CONNECTIONPARAMETER", StringType, true)))
+
+
+    // use jdbcUtils.saveTable
+    org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils.saveTable(sqlContext.createDataFrame(users, schema), url, "GOV_PARA_SYSTEM", prop)
+
+
+    // user dataFrame.write.mode
+    //    sqlContext.createDataFrame(users, schema).write.mode(SaveMode.Append).jdbc(url, "GOV_PARA_SYSTEM", prop)
+
+  }
+
+  def dbShow(sqlContext: SQLContext): Unit = {
     val prop = new Properties()
     Class.forName("oracle.jdbc.driver.OracleDriver").newInstance
     prop.put("user", "rcontrol")
@@ -35,19 +93,15 @@ object DBShow {
 
     println("=============>>  ")
     println("df.select(\"GOVSYSTEMNAME\")")
-    println(df.select("GOVSYSTEMNAME"))
-
+    println(df.select("GOVSYSTEMNAME", "CONNECTIONPARAMETER").show())
 
     println("=============>>  ")
     println(df.count())
-
     println(df.rdd.partitions.size)
     //executeQuery(sparkContext)
-    df.show()
 
-  }
-
-  def executeInsert(sparkContext: SparkContext): Unit = {
+    //df.show()
+    df.write.mode(SaveMode.Append).saveAsTable("gov_para_system")
 
   }
 
