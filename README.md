@@ -57,3 +57,54 @@ lines.saveAsTextFile()
     
 #### 驱动器在spark中的2个职责
 - 把用户程序转换成任务
+
+----
+#### 使用sparkSQL读取数据库
+- 读取
+
+```
+    // load jdbc driver
+    Class.forName("com.mysql.jdbc.Driver").newInstance
+    val prop = new Properties()
+    prop.put("user","test")
+    prop.put("password","test")
+    
+    // create DataFrame
+    val df: DataFrame = sqlContext.read.jdbc("jdbc:mysql://localhsot:3306", "user", prop)
+    
+    // show schema
+    df.schema()
+    
+    // show data table row count
+    df.count()
+    
+    // print table content
+    df.show()
+```
+
+- 写数据至数据库
+
+```
+    // load jdbc driver
+    Class.forName("com.mysql.jdbc.Driver").newInstance
+    val url = "jdbc:mysql://localhost:3306/test"
+    val prop = new Properties()
+    prop.put("user","test")
+    prop.put("password","test")
+         
+    // init data
+    case class user :(id: String, name :String)
+    val users = sparkContext.parallelize(1 to 10).map(i => User("id_" + i, "name_" + i)).map(i => Row(i.id, i.name))
+    
+    // create schema
+    val schema = StructType(Array(StructFiled("id", StringType, true),StructFiled("name", StringType, true)))
+
+    // create dataFrame
+    val df = sqlContext.createDataFrame(users, schema)
+    
+    // write data for mysql
+    df.write.mode(SaveMode.Append).jdbc(url, "user", prop)
+    
+    // when the database is oracle. use follow code
+    org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils.saveTable(df, url, "user", prop)
+```
