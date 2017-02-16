@@ -16,7 +16,6 @@ object DBShow {
 
     val sparkContext = new SparkContext(new SparkConf().setAppName("DBShow").setMaster("local"))
 
-
     //mysqlSave(sparkContext)
 
     oracleSave(sparkContext)
