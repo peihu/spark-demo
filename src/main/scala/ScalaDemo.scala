@@ -1,4 +1,4 @@
-package com.spark.demo
+package com.spark.demo;
 
 /**
  * Scala语法学习：

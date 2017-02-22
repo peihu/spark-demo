@@ -1,7 +1,5 @@
 import java.util.Properties
 
-import org.apache.spark.SparkContext
-
 /**
  * Created by phwang on 2017/2/13.
  */

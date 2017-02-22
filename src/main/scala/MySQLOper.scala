@@ -1,7 +1,7 @@
-import java.sql.{ResultSet, DriverManager, Connection}
+import java.sql.{ResultSet, DriverManager}
 
-import org.apache.spark.{SparkContext, SparkConf}
 import org.apache.spark.rdd.JdbcRDD
+import org.apache.spark.{SparkContext, SparkConf}
 
 /**
  *

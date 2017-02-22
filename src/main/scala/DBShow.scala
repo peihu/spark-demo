@@ -1,9 +1,9 @@
-import java.sql.{DriverManager, ResultSet}
+import java.sql.{ResultSet, DriverManager}
 import java.util.Properties
 
 import org.apache.spark.rdd.JdbcRDD
-import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
-import org.apache.spark.sql.{Row, SaveMode, DataFrame, SQLContext}
+import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.{DataFrame, SaveMode, Row, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**

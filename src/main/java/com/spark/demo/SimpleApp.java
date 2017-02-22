@@ -76,7 +76,6 @@ public class SimpleApp {
         return null;
     }
 
-
     /**
      */
     private static void readfile() {
