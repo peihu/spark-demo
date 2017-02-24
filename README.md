@@ -108,3 +108,15 @@ lines.saveAsTextFile()
     // when the database is oracle. use follow code
     org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils.saveTable(df, url, "user", prop)
 ```
+
+---
+- spark-submit方式提交的时候，会出现找不到驱动，直接--jars也无法找到驱动
+使用下面这种方式就可以：
+```
+./spark-submit --master local[2] --driver-class-path /opt/users/ojdbc14.jar --class "DBShow" /opt/users/jobs/spark-read-db-jobs-SNAPSHOT.jar
+```
+
+- 或者直接把驱动加载`conf/spark-env.sh`这个文件里也可以
+```
+    export $SPARK_CLASSPAHT=$SPARK_CLASSPAHT:/opt/users/ojdbc14.jar
+```

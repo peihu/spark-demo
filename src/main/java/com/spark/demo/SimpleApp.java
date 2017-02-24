@@ -11,12 +11,12 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.sql.DataFrame;
 import org.apache.spark.sql.SQLContext;
 
 public class SimpleApp {
     public static void main(String[] args) {
-        readFromMysql();
+        System.out.println("20156======test----file");
+//        readFromMysql();
         //        readfile();
 
         //saveAsText(containsA, containsB);

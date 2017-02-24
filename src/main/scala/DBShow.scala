@@ -1,5 +1,6 @@
 import java.sql.{ResultSet, DriverManager}
-import java.util.Properties
+import java.text.SimpleDateFormat
+import java.util.{UUID, Date, Properties}
 
 import org.apache.spark.rdd.JdbcRDD
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
@@ -15,37 +16,10 @@ object DBShow {
   def main(args: Array[String]) {
 
     val sparkContext = new SparkContext(new SparkConf().setAppName("DBShow").setMaster("local"))
+    //val sparkContext = new SparkContext(new SparkConf().setAppName("DBShow").setMaster("local"))
 
-    //mysqlSave(sparkContext)
 
     oracleSave(sparkContext)
-  }
-
-
-  def mysqlSave(sparkContext: SparkContext): Unit = {
-    val sqlContext: SQLContext = new SQLContext(sparkContext)
-
-    val prop = new Properties()
-    Class.forName("com.mysql.jdbc.Driver").newInstance
-    prop.put("user", "root")
-    prop.put("password", "root")
-
-    case class User(GOVSYSTEMNAME: String, CONNECTIONPARAMETER: String)
-
-    val users = sparkContext.parallelize(1 to 10).map(f => User("k-" + f, "val-" + f)).map(f => Row(f.GOVSYSTEMNAME, f.CONNECTIONPARAMETER))
-
-    println("===================")
-    println("=users.foreach(println)=")
-    users.foreach(println)
-    println("===================")
-
-    val schema = StructType(Array(StructField("k_a", StringType, true), StructField("v_a", StringType, true)))
-
-
-    sqlContext.createDataFrame(users, schema).write.mode(SaveMode.Append).jdbc(
-      "jdbc:mysql://localhost:3306/test", "st", prop)
-
-
   }
 
 
@@ -59,7 +33,10 @@ object DBShow {
 
     case class User(GOVSYSTEMNAME: String, CONNECTIONPARAMETER: String)
 
-    val users = sparkContext.parallelize(1 to 10).map(f => User("key-" + f, "val-" + f)).map(f => Row(f.GOVSYSTEMNAME, f.CONNECTIONPARAMETER))
+    val users = sparkContext.parallelize(1 to 10)
+      .map(f => User("test-" + UUID.randomUUID(),
+        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(new Date()) + UUID.randomUUID()))
+      .map(f => Row(f.GOVSYSTEMNAME, f.CONNECTIONPARAMETER))
 
     val schema = StructType(Array(StructField("GOVSYSTEMNAME", StringType, true), StructField("CONNECTIONPARAMETER", StringType, true)))
 
