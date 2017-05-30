@@ -42,7 +42,7 @@ object DBShow {
 
 
     // use jdbcUtils.saveTable
-    org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils.saveTable(sqlContext.createDataFrame(users, schema), url, "GOV_PARA_SYSTEM", prop)
+//    org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils.saveTable(sqlContext.createDataFrame(users, schema), url, "GOV_PARA_SYSTEM", prop)
 
 
     // user dataFrame.write.mode

@@ -9,9 +9,8 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!--<spark.version>1.3.0-cdh5.4.2</spark.version>-->
-        <spark.version>1.5.1</spark.version>
-        <scala.version>2.10.4</scala.version>
+        <spark.version>2.1.1</spark.version>
+        <scala.version>2.11</scala.version>
         <jackson.version>2.4.2</jackson.version>
         <slf4j.version>1.7.7</slf4j.version>
     </properties>
@@ -20,9 +19,8 @@
         <!--Spark 核⼼心jar包-->
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.10</artifactId>
+            <artifactId>spark-core_2.11</artifactId>
             <version>${spark.version}</version>
-            <scope>provided</scope>
         </dependency>
         <!--
         <dependency>
