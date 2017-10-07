@@ -8,9 +8,10 @@ import org.apache.spark.sql.{DataFrame, SaveMode, Row, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
- * scala版本的数据读取
- * Created by phwang on 2017/2/10.
- */
+  * scala版本的数据读取
+  *
+  * Created by phwang on 2017/2/10.
+  */
 object DBShow {
 
   def main(args: Array[String]) {
@@ -42,7 +43,7 @@ object DBShow {
 
 
     // use jdbcUtils.saveTable
-//    org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils.saveTable(sqlContext.createDataFrame(users, schema), url, "GOV_PARA_SYSTEM", prop)
+    //    org.apache.spark.sql.execution.datasources.jdbc.JdbcUtils.saveTable(sqlContext.createDataFrame(users, schema), url, "GOV_PARA_SYSTEM", prop)
 
 
     // user dataFrame.write.mode

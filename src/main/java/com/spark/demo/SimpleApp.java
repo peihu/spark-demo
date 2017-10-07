@@ -16,7 +16,7 @@ import org.apache.spark.sql.SQLContext;
 public class SimpleApp {
     public static void main(String[] args) {
         System.out.println("20156======test----file");
-//        readFromMysql();
+        //        readFromMysql();
         //        readfile();
 
         //saveAsText(containsA, containsB);
@@ -28,17 +28,14 @@ public class SimpleApp {
     private static void readFromMysql() {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        String url = "jdbc:mysql://localhost:3306/test";
-        SparkConf conf = new SparkConf().setAppName("Simple Application").setMaster("local");
-        JavaSparkContext sc = new JavaSparkContext(conf);
-        SQLContext sqlContext = new org.apache.spark.sql.SQLContext(sc);
+        String           url        = "jdbc:mysql://localhost:3306/test";
+        SparkConf        conf       =
+          new SparkConf().setAppName("Simple Application").setMaster("local");
+        JavaSparkContext sc         = new JavaSparkContext(conf);
+        SQLContext       sqlContext = new org.apache.spark.sql.SQLContext(sc);
 
     }
 
@@ -47,13 +44,8 @@ public class SimpleApp {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             String url = "jdbc:mysql://localhost:3306/test";
             return DriverManager.getConnection(url, "root", "root");
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException |
+          SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -64,13 +56,8 @@ public class SimpleApp {
             Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
             String url = "jdbc:oracle:thin:@10.48.193.234:1521:hpdev26";
             return DriverManager.getConnection(url, "rcontrol", "rcontrol");
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException |
+          SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -79,25 +66,20 @@ public class SimpleApp {
     /**
      */
     private static void readfile() {
-        String logFile = "/opt/dev/phwang/README.md"; // Should be some file on your system
-        SparkConf conf = new SparkConf().setAppName("Simple Application");
-        JavaSparkContext sc = new JavaSparkContext(conf);
+        String           logFile =
+          "/opt/dev/phwang/README.md"; // Should be some file on your system
+        SparkConf        conf    = new SparkConf().setAppName("Simple Application");
+        JavaSparkContext sc      = new JavaSparkContext(conf);
 
         JavaRDD<String> logData = sc.textFile(logFile).cache();
 
         //
-        JavaRDD<String> containsA = logData.filter(new Function<String, Boolean>() {
-            public Boolean call(String s) {
-                return s.contains("a");
-            }
-        });
+        JavaRDD<String> containsA =
+          logData.filter((Function<String, Boolean>) s -> s.contains("a"));
         long numAs = containsA.count();
 
-        JavaRDD<String> containsB = logData.filter(new Function<String, Boolean>() {
-            public Boolean call(String s) {
-                return s.contains("b");
-            }
-        });
+        JavaRDD<String> containsB =
+          logData.filter((Function<String, Boolean>) s -> s.contains("b"));
 
         long numBs = containsB.count();
         System.out.println("Lines with a: " + numAs + ", lines with b: " + numBs);
@@ -105,12 +87,8 @@ public class SimpleApp {
 
     private static void parallelize(JavaSparkContext sc) {
         JavaRDD<Integer> parallelize = sc.parallelize(Arrays.asList(1, 2, 3, 4));
-        JavaRDD<Object> mapResult = parallelize.map(new Function<Integer, Object>() {
-            public Object call(Integer x) throws Exception {
-                return x * x;
-            }
-        });
-        List<Object> collect = mapResult.collect();
+        JavaRDD<Object>  mapResult   = parallelize.map((Function<Integer, Object>) x -> x * x);
+        List<Object>     collect     = mapResult.collect();
         System.out.println(StringUtils.join(collect, ","));
     }
 

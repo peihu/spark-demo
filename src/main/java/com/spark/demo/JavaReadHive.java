@@ -1,4 +1,5 @@
-package com.muku.ebpg;
+package com.spark.demo;
+
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -6,14 +7,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import lombok.extern.log4j.Log4j;
-
-@Log4j
 public class JavaReadHive {
 
     private static final String JDBC_DRIVER_NAME = "org.apache.hive.jdbc.HiveDriver";
     private static final String connectionUrl    = "jdbc:hive2://h4.hadoop.com:2181,h1.hadoop.com:2181,h2.hadoop"
-                                                   + ".com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2";
+      + ".com:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2";
 
     public static void main(String[] args) throws IOException {
 
@@ -31,7 +29,7 @@ public class JavaReadHive {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 System.out.println(
-                        rs.getString(1));
+                  rs.getString(1));
             }
             System.out.println("Select from Hive table : OK");
 
@@ -45,5 +43,6 @@ public class JavaReadHive {
             }
         }
     }
+
 
 }
